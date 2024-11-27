@@ -77,12 +77,13 @@ public class Crop implements StoreProduct
 	 */
 	public boolean canHarvest() //이 항목을 날씨, growth score로 바꿔서 넣으면 될듯
 	{
-		if (growthNow >= growthMax)
+		if ((dayGrown >= dayMax) && (sunGrown >= sunMax) && (rainGrown >= rainMax) )
 		{
 			return true;
 		}
 		return false;
 	}
+	
 	
 	/**
 	 * Grows the crop by increasing its <code>daysGrown</code> only if the days left to grow is greater than 0.
