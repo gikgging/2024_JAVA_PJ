@@ -3,49 +3,38 @@ package main;
 /**
  * Crop class where crops are extended from.
  * Here the user can grow the crop, get days left to grow and get the sell price.
- * @author Griffin Baxter and Rutger van Kruiningen
+ * -Must be modified by SY and HJ-
  */
 public class Crop implements StoreProduct
 {
-
-	/**
-	 * The name of the crop.
-	 */
-	private String cropName;
+	//The kind(name) of the crop
+	private String name;
 	
-	/**
-	 * The purchase price of the crop.
-	 */
-	private double purchasePrice;
+	//The price as which the user would purchase the crop.
+	private double buyPrice;
 	
-	/**
-	 * The sell price of the crop.
-	 */
+	//The price as which the user would sell the crop.
 	private double sellPrice;
 	
-	/**
-	 * The days for the crop to grow.
-	 */
-	private int daysToGrow;
+	//The Maximum Growth for the crop
+	private int growthMax;
+
+	//The Recent Growth of the crop
+	private int growthNow = 0;
 	
 	/**
-	 * The days the crop has grown.
+	 * Constructor function for Crop Class with each element
+	 * kind: The name of the crop.
+	 * i_buyPrice: The initial purchase price of the crop.
+	 * i_sellPrice: The initial sell price of the crop.
+	 * i_goalGrowth: The initial number of days the crop has to grow.
 	 */
-	private int daysGrown = 0;
-	
-	/**
-	 * Constructor function for Crop Class, this constructor initialises variables <code>cropName</code>, <code>purchasePrice</code>, <code>sellPrice</code> and <code>daysToGrow</code>.
-	 * @param name The name of the crop.
-	 * @param initPurchasePrice The initial purchase price of the crop.
-	 * @param initSellPrice The initial sell price of the crop.
-	 * @param initDaysToGrow The initial number of days the crop has to grow.
-	 */
-	public Crop(String name, double initPurchasePrice, double initSellPrice, int initDaysToGrow)
+	public Crop(String kind, double i_buyPrice, double i_sellPrice, int i_goalGrowth)
 	{
-		cropName = name;
-		purchasePrice = initPurchasePrice;
-		sellPrice = initSellPrice;
-		daysToGrow = initDaysToGrow;
+		name = kind;
+		buyPrice = i_buyPrice;
+		sellPrice = i_sellPrice;
+		growthMax = i_goalGrowth;
 	}
 	
 	/**
@@ -54,11 +43,11 @@ public class Crop implements StoreProduct
 	 */
 	public Crop(Crop crop)
 	{
-		cropName = crop.getName();
-		purchasePrice = crop.getPurchasePrice();
+		name = crop.getName();
+		buyPrice = crop.getBuyPrice();
 		sellPrice = crop.getSellPrice();
-		daysToGrow = crop.getDaysToGrow();
-		daysGrown = 0;
+		growthMax = crop.getGrowthMax();
+		growthNow = 0;
 	}
 	
 	/**
@@ -68,7 +57,7 @@ public class Crop implements StoreProduct
 	 */
 	public boolean canHarvest() //이 항목을 날씨, growth score로 바꿔서 넣으면 될듯
 	{
-		if (daysGrown >= daysToGrow)
+		if (growthNow >= growthMax)
 		{
 			return true;
 		}
@@ -80,9 +69,9 @@ public class Crop implements StoreProduct
 	 */
 	public void grow()
 	{
-		if (getDaysLeftToGrow() > 0)
+		if (getLeftGrowth() > 0)
 		{
-			daysGrown++;
+			growthNow++; //점수 산정방식을 정해야함
 		}
 		
 	}
@@ -91,12 +80,12 @@ public class Crop implements StoreProduct
 	 * Tends to the crop by the specified double <code>daysToIncrease</code>, only if the days left to grow is greater than 0.
 	 * @param daysToIncrease Number of days to increase growth by.
 	 */
-	public void tend(double daysToIncrease)
+	public void tend(double increasedGrowing)
 	{
-		daysGrown += daysToIncrease;
-		if (getDaysLeftToGrow() < 0)
+		growthNow += increasedGrowing;
+		if (getLeftGrowth() < 0)
 		{
-			daysGrown = daysToGrow;
+			growthNow = growthMax;
 		}
 	}
 	
@@ -104,9 +93,9 @@ public class Crop implements StoreProduct
 	 * Returns the purchase price of the crop.
 	 * @return the purchase price.
 	 */
-	public double getPurchasePrice()
+	public double getBuyPrice()
 	{
-		return purchasePrice;
+		return buyPrice;
 	}	
 	
 	/**
@@ -124,34 +113,34 @@ public class Crop implements StoreProduct
 	 */
 	public String getName() 
 	{
-		return cropName;
+		return name;
 	}
 	
 	/**
 	 * Returns the number of days the crop has grown.
 	 * @return The days the crop has grown.
 	 */
-	public int getDaysGrown() 
+	public int getGrowthNow() 
 	{
-		return daysGrown;
+		return growthNow;
 	}
 	
 	/**
 	 * Returns the number of days the crop needs to grow.
 	 * @return The days the crop needs to grow.
 	 */
-	public int getDaysToGrow() 
+	public int getGrowthMax() 
 	{
-		return daysToGrow;
+		return growthMax;
 	}
 	
 	/**
 	 * Calculates and returns the days the crop has left to grow by subtracting the <code>daysGrown</code> from <code>daysToGrow</code>.
 	 * @return The days the crop has left to grow.
 	 */
-	public int getDaysLeftToGrow() 
+	public int getLeftGrowth() 
 	{
-		return daysToGrow - daysGrown;
+		return growthMax - growthNow;
 	}
 	
 }
