@@ -1,5 +1,10 @@
 package main;
 import java.util.ArrayList;
+import java.util.Random;
+
+import weathers.Sunny;
+import weathers.Rainy;
+import weathers.Cloudy;
 
 /**
  * Farm class where the users farm gets managed.
@@ -19,10 +24,6 @@ public class Farm
 	 */
 	private ArrayList<Crop> crops = new ArrayList<Crop>();
 	
-	/**
-	 * Animals owned ArrayList, gets filled with Animals.
-	 */
-	private ArrayList<Animal> animals = new ArrayList<Animal>();
 	
 	/**
 	 * Items owned ArrayList, gets filled with Items.
@@ -44,56 +45,38 @@ public class Farm
 	 */
 	private int cropSpace;
 	
+	//Generate the weather
+	private todayWeather = new WeatherGenerator();
+	
 	
 	/**
 	 * Constructor function for Farm Class, this constructor initialises variables <code>farmName</code> and Sets the farm type.
 	 * @param name The name of the farmer.
 	 * @param type The type of the farmer in String format.
 	 */
-	public Farm(String name, String type) 
+	public Farm(String name, String type) //SetFarmtype을 지웠기 때문에 여기에서 money를 initialize 해야 할 수도..일단 좀 더 작성하면서 구현하기
+	
 	{
         farmName = name;
         setFarmType(type);
     }
 	
-	/**
-	 * Sets the farm type from the <code>type</code> String, and uses if statements to set the farm type.
-	 * @param type Type of the farm.
-	 */
-	public void setFarmType(String type)
-	{
-		if (type == "Normal") // Normal Farm
-		{
-			initMoney = 150;
-			cropSpace = 10;
+	//Generate daily weather of the Farm
+	public class WeatherGenerator{
+		Random random = new Random();
+		int num = random.nextInt(10);
+		
+		if (num < 3) { //The probability of Sunny weather = 30%
+			return new Sunny();
 		}
-		else if (type == "Rich") // Rich Farm
-		{
-			initMoney = 200;
-			cropSpace = 10;
+		else if (num < 7) { //The probability of Cloudy weather = 40%
+			return new Cloudy();
 		}
-		else if (type == "Happy") // Happy Farm
-		{
-			initMoney = 100;
-			cropSpace = 10;
+		else { //The probability of Rainy weather = 30%
+			return new Rainy();
 		}
-		else // Large Farm
-		{
-			initMoney = 100;
-			cropSpace = 20;
-		}
-		money = initMoney;	
 	}
-	
-	/**
-	 * Tends to the Farm to make animals happier and increase space available, returns true if there are animals to increase their happiness, otherwise returns false.
-	 * @return true if there are animals, false otherwise.
-	 */
-	public boolean tendFarm()
-	{
-		cropSpace++;
-		return increaseHappinessAllAnimals();
-	}
+
 	
 	/**
 	 * Calculates the available free space.
@@ -174,7 +157,7 @@ public class Farm
 	{
 		for(Crop crop: crops) 
 		{
-			crop.grow();
+			crop.grow(todayWeather);
 		}
 	}
 	
