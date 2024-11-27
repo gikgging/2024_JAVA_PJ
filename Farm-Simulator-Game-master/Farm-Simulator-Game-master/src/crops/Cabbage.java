@@ -14,7 +14,8 @@ public class Cabbage extends Crop
      */
     public Cabbage()
     {
-        super("Cabbage", 20.0, 100.0, 5);//Name, buy price, sell price, days to grow(harvestDays) 
+        super("Cabbage", 20.0, 100.0, 5);//Name, buy price, sell price, days to grow(harvestDays)
+        //For Test 1 17:55
     }
 
 }
