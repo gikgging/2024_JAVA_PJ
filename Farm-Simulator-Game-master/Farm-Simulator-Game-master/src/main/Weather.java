@@ -1,6 +1,6 @@
 package main;
 
-public class Weather; {
+public class Weather {
 	
 	//The name of Weather
 	private String weatherName;
@@ -18,10 +18,12 @@ public class Weather; {
 		rainScore = initRain;
 	}
 	
-	//When the weather score is applied >> Crop에 넣어야하나?, sunScore_prev 등의 변수 정의 필요
-	public void weather_score(double sunScore, double rainScore) {
-		sunScore_prev += sunScore;
-		rainScore_prev += rainScore;
+	public double GetSun() {
+		return sunScore;
+	}
+	
+	public double GetRain() {
+		return rainScore;
 	}
 	
 }

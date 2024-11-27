@@ -1,5 +1,7 @@
 package main;
 
+import main.Weather;
+
 /**
  * Crop class where crops are extended from.
  * Here the user can grow the crop, get days left to grow and get the sell price.
@@ -16,11 +18,23 @@ public class Crop implements StoreProduct
 	//The price as which the user would sell the crop.
 	private double sellPrice;
 	
-	//The Maximum Growth for the crop
-	private int growthMax;
-
-	//The Recent Growth of the crop
-	private int growthNow = 0;
+	//The Maximum Days for Harvest
+	private int dayMax;
+	
+	//The Days to be grown
+	private int dayGrown = 0;
+	
+	//The Maximum amount of Sun for Harvest
+	private double sunMax;
+	
+	//The amount of Sun to be grown
+	private double sunGrown = 0;
+	
+	//The Maximum amount of rain for Harvest
+	private double rainMax;
+	
+	//The amount of Rain to be grown
+	private double rainGrown = 0;
 	
 	/**
 	 * Constructor function for Crop Class with each element
@@ -29,12 +43,14 @@ public class Crop implements StoreProduct
 	 * i_sellPrice: The initial sell price of the crop.
 	 * i_goalGrowth: The initial number of days the crop has to grow.
 	 */
-	public Crop(String kind, double i_buyPrice, double i_sellPrice, int i_goalGrowth)
+	public Crop(String kind, double i_buyPrice, double i_sellPrice, int i_day, double i_sun, double i_rain)
 	{
 		name = kind;
 		buyPrice = i_buyPrice;
 		sellPrice = i_sellPrice;
-		growthMax = i_goalGrowth;
+		dayMax = i_day;
+		sunMax = i_sun;
+		rainMax = i_rain;
 	}
 	
 	/**
@@ -46,8 +62,12 @@ public class Crop implements StoreProduct
 		name = crop.getName();
 		buyPrice = crop.getBuyPrice();
 		sellPrice = crop.getSellPrice();
-		growthMax = crop.getGrowthMax();
-		growthNow = 0;
+		dayMax = crop.getDayMax();
+		sunMax = crop.getSunMax();
+		rainMax = crop.getRainMax();
+		dayGrown = 0;
+		sunGrown = 0;
+		rainGrown = 0;
 	}
 	
 	/**
@@ -67,12 +87,23 @@ public class Crop implements StoreProduct
 	/**
 	 * Grows the crop by increasing its <code>daysGrown</code> only if the days left to grow is greater than 0.
 	 */
-	public void grow()
+	public void grow(Weather todayWeather)
 	{
-		if (getLeftGrowth() > 0)
+		if (getLeftDay() > 0)
 		{
-			growthNow++; //점수 산정방식을 정해야함
+			dayGrown++;
 		}
+		
+		if (getLeftSun() > 0)
+		{
+			sunGrown += todayWeather.GetSun();
+		}
+		
+		if (getLeftRain() > 0)
+		{
+			rainGrown += todayWeather.GetRain();
+		}
+		
 		
 	}
 	
@@ -80,12 +111,12 @@ public class Crop implements StoreProduct
 	 * Tends to the crop by the specified double <code>daysToIncrease</code>, only if the days left to grow is greater than 0.
 	 * @param daysToIncrease Number of days to increase growth by.
 	 */
-	public void tend(double increasedGrowing)
+	public void tend(int increasedDay)
 	{
-		growthNow += increasedGrowing;
-		if (getLeftGrowth() < 0)
+		dayGrown += increasedDay;
+		if (getLeftDay() < 0)
 		{
-			growthNow = growthMax;
+			dayGrown = dayMax;
 		}
 	}
 	
@@ -120,27 +151,54 @@ public class Crop implements StoreProduct
 	 * Returns the number of days the crop has grown.
 	 * @return The days the crop has grown.
 	 */
-	public int getGrowthNow() 
+	public int getDayGrown() 
 	{
-		return growthNow;
+		return dayGrown;
 	}
 	
-	/**
-	 * Returns the number of days the crop needs to grow.
-	 * @return The days the crop needs to grow.
-	 */
-	public int getGrowthMax() 
+	public int getDayMax()
 	{
-		return growthMax;
+		return dayMax;
 	}
+	
+	public double getSunGrown()
+	{
+		return sunGrown;
+	}
+	
+	public double getSunMax()
+	{
+		return sunMax;
+	}
+	
+	public double getRainGrown()
+	{
+		return rainGrown;
+	}
+	
+	public double getRainMax()
+	{
+		return rainMax;
+	}
+
 	
 	/**
 	 * Calculates and returns the days the crop has left to grow by subtracting the <code>daysGrown</code> from <code>daysToGrow</code>.
 	 * @return The days the crop has left to grow.
 	 */
-	public int getLeftGrowth() 
+	public int getLeftDay() 
 	{
-		return growthMax - growthNow;
+		return dayMax - dayGrown;
+	}
+	
+	public double getLeftSun()
+	{
+		return sunMax - sunGrown;
+	}
+	
+	public double getLeftRain()
+	{
+		return rainMax - rainGrown;
 	}
 	
 }
