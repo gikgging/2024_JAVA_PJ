@@ -1,6 +1,6 @@
 package main;
 
-import gui.FeedAnimalsScreen;
+
 import gui.MainScreen;
 import gui.SetupScreen;
 import gui.StoreScreen;
@@ -13,8 +13,12 @@ import java.lang.Math;
  * In this screen the user can play the farm simulator game.
  * @author Griffin Baxter and Rutger van Kruiningen
  */
-public class GameEnvironment 
+public class GameCenter
 {
+	/**
+	 * The Weather Class
+	 */
+	private Weather weather;
 	
 	/**
 	 * The farm Class.
@@ -165,59 +169,7 @@ public class GameEnvironment
 		}
 	}
 	
-	/**
-	 * Feed to all of the animals owned with the item <code>itemName</code>.
-	 * @param itemName The name of the item used.
-	 * @return String identifying the action performed.
-	 */
-	public String feedAnimals(String itemName)
-	{
-		if (actionsPerformed >= 2) 
-		{
-			return "You cannot do this as you have no actions left";
-		}
-		else 
-		{
-			int count = 0;
-			int index = 0;
-			for (Item item: farm.getItems())
-			{
-				if (item.getName() == itemName)
-				{
-					index = count;
-				}
-				count++;
-			}
-			
-			Item itemUsed = farm.getItems().get(index);
-				
-			farm.increaseHealthAllAnimals(itemUsed.getBonus());
-			actionsPerformed++;
-			farm.decreaseItems(itemUsed);
-			return "Fed every animal with " + itemUsed.getName();
-		}
-	}
-	
-	/**
-	 * a function that allows the user to play with the animals owned, doing this will increase their happiness.
-	 * @return String identifying the action performed.
-	 */
-	public String playWithAnimals()
-	{
-		if (actionsPerformed >= 2) 
-		{
-			return "You cannot do this as you have no actions left";
-		}
-		else if (farm.increaseHappinessAllAnimals()) 
-		{
-			actionsPerformed++;
-			return "Played with every animal (and increased their happiness by doing so)";
-		}
-		else 
-		{
-			return "You have no animals to play with, so no actions were used";
-		}
-	}
+
 	
 	/**
 	 * A function that will harvest the crops that can be harvested, 
@@ -270,7 +222,7 @@ public class GameEnvironment
 	 * Prints out the farmers name, the number of days passed, the money made and the score.
 	 * @return finish game dialog String
 	 */
-	public String finishGame()
+	public String finishGame() /*이 부분을 주 단위로 끊어야함*/
 	{
 		String profitString;
 		double scoreProfit = farm.getProfit();
@@ -372,23 +324,7 @@ public class GameEnvironment
 		tendCropsWindow.closeWindow();
 	}
 	
-	/**
-	 * A method to launch the feed animals screen where the user feeds animals by feeding them items.
-	 */
-	public void launchFeedAnimalsScreen()
-	{
-		new FeedAnimalsScreen(this);
-	}
-	
-	/**
-	 * A method to close the feed animals screen
-	 * @param feedAnimalsWindow The feed animals screen.
-	 */
-	public void closeFeedAnimalsScreen(FeedAnimalsScreen feedAnimalsWindow)
-	{
-		feedAnimalsWindow.closeWindow();
-	}
-	
+
 	/**
 	 * Returns a String array with the name of all of the crops currently owned.
 	 * @return String Array containing names of Animals
@@ -436,7 +372,7 @@ public class GameEnvironment
 	 * Returns a String formated correctly for displaying each crop and animal and its status.
 	 * @return string containing status of crops and animals
 	 */
-	public String returnStatusCropsAnimals()
+	public String returnStatusCrops()
 	{
 		String returnString = "";
 		returnString += farm.getFarmName() + " has " + farm.getCrops().size() + " crops\r\n";
@@ -455,13 +391,6 @@ public class GameEnvironment
 			}
 		}
 		
-		returnString += "\r\n" + farm.getFarmName() + " has " + farm.getAnimals().size() + " animals\r\n";
-		for(Animal animal: farm.getAnimals()) 
-		{
-			returnString += animal.getName() + " has a happiness level of " + String.format("%.1f", animal.getHappiness())
-				+ " and a healthiness level of " + String.format("%.1f", animal.getHealth())
-				+ ", which equates to $" + returnDollarsCents(animal.getDailyProfit()) + " per day\r\n";
-		}
 		return returnString;
 	}
 	
@@ -561,42 +490,7 @@ public class GameEnvironment
 		return purchaseCropString;
 	}
 	
-	/**
-	 * Returns String Array of animals with the animals formated so that each animal has its details and price on one line.
-	 * @return String Array of animals.
-	 */
-	public String[] returnAnimalArray()
-	{
-		ArrayList<String> animalArrayList = new ArrayList<String>();
-		for(Animal animal: store.getAnimalsForSale()) 
-		{
-			animalArrayList.add(animal.getName()
-			+ ", Purchase price: $" + returnDollarsCents(animal.getPurchasePrice())
-			+ ", Daily profit at base Happiness: $" + returnDollarsCents(animal.getDailyProfit()));
-		}
-		String[] animalArray = animalArrayList.toArray(new String[0]);
-		return animalArray;
-	}
 	
-	/**
-	 * Takes a purchaseOption index and purchases the Animal at that index in the farm animals ArrayList.
-	 * @param purchaseOption Animal the user chose to buy.
-	 * @return String detailing what the user did.
-	 */
-	public String purchaseAnimal(int purchaseOption)
-	{
-		String purchaseAnimalString = "";
-			if (farm.getMoney() < store.getAnimalsForSale().get(purchaseOption).getPurchasePrice()) 
-			{
-				purchaseAnimalString = "You don't have enough money to buy " + store.getAnimalsForSale().get(purchaseOption).getName() + "!" ;
-			}
-			else
-			{
-				farm.increaseAnimals(store.getAnimalsForSale().get(purchaseOption));
-				purchaseAnimalString = store.getAnimalsForSale().get(purchaseOption).getName() + " bought!";
-			}
-		return purchaseAnimalString;
-	}
 	
 	/**
 	 * Returns String Array of items with the items formated so that each item has its details and price on one line.
@@ -661,22 +555,6 @@ public class GameEnvironment
 		return size;
 	}
 	
-	/**
-	 * Returns the number of items the user has that have the type "Animal".
-	 * @return Integer of the number of items of type "Animal".
-	 */
-	public int returnAnimalItemSize()
-	{
-		int size = 0;
-		for (Item item: farm.getItems()) 
-		{
-			if (item.getType() == "Animal") 
-			{
-				size++;
-			}
-		}
-		return size;
-	}
 	
 	/**
 	 * Returns the different types of crops owned by their Name.
@@ -729,15 +607,6 @@ public class GameEnvironment
 	}
 	
 	/**
-	 * Returns the ArrayList animals from the farm class.
-	 * @return ArrayList of animals owned.
-	 */
-	public ArrayList<Animal> getAnimals()
-	{
-		return farm.getAnimals();
-	}
-	
-	/**
 	 * Returns the number of days user wants to play for.
 	 * @return Number of days
 	 */
@@ -761,7 +630,7 @@ public class GameEnvironment
 	 */
 	public static void main(String[] args)
 	{
-		GameEnvironment game = new GameEnvironment();
+		GameCenter game = new GameCenter();
 		game.launchSetupScreen();
 	}
 
