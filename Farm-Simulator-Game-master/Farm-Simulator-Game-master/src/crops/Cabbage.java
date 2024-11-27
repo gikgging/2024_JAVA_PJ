@@ -15,6 +15,7 @@ public class Cabbage extends Crop
     public Cabbage()
     {
         super("Cabbage", 20.0, 100.0, 5);//Name, buy price, sell price, days to grow(harvestDays)
+        //Originally, it's ("Cabbage", 20,0, 100.0, 5); ->Must be modified
     }
 
 }
