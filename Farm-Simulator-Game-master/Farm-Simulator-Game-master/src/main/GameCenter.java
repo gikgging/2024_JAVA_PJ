@@ -149,7 +149,7 @@ public class GameCenter
 				farm.tendSpecificCrops(cropName, 1.0);
 				return "Tended to every " + cropName + " by watering them";
 			}
-			else // If an item was used on the crop
+			else // If an item was used on the crop >> 이거랑 같은 방식으로 health에도 추가하면 될듯합니당
 			{
 				int count = 0;
 				int index = 0;

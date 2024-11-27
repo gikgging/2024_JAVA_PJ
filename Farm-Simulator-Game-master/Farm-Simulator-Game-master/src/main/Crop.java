@@ -66,7 +66,7 @@ public class Crop implements StoreProduct
 	 * This is done by checking if the <code>daysGrown</code> is greater than or equal to <code>daysToGrow</code>.
 	 * @return true if the crop can be harvested, false otherwise.
 	 */
-	public boolean canHarvest() 
+	public boolean canHarvest() //이 항목을 날씨, growth score로 바꿔서 넣으면 될듯
 	{
 		if (daysGrown >= daysToGrow)
 		{

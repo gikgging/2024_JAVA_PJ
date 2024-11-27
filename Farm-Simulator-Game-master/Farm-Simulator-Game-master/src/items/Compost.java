@@ -4,7 +4,6 @@ import main.Item;
 
 /**
  * Compost class extending the Item class.
- * @author Griffin Baxter and Rutger van Kruiningen
  */
 public class Compost extends Item
 {
@@ -14,7 +13,7 @@ public class Compost extends Item
 	 */
 	public Compost()
 	{
-		super("Compost", "Crop", 100.0, 3.0); //Name, type (crop or animal), price, bonus
+		super("Compost", "Crop", 100.0, 3.0); //Name, type (crop or Product or Health), price, bonus
 	}
 
 }
