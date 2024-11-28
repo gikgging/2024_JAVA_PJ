@@ -13,3 +13,6 @@
 
 11/27 6:33 pm
 - Seoyeon Git Connection Completed
+
+11/28 1:12 am
+- Finally we got the 1st Merge!!
