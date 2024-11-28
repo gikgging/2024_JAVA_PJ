@@ -2,19 +2,15 @@ package crops;
 
 import main.Crop;
 
-/**
- * Potato class extending the Crop class.
- * @author Griffin Baxter and Rutger van Kruiningen
- */
+//Garlic class extending the Crop class.
+
 public class Garlic extends Crop
 {
 
-    /**
-     * Potato constructor.
-     */
+    //Garlic constructor.
     public Garlic()
     {
-        super("Garlic", 20.0, 50.0, 3);//Name, buy price, sell price, days to grow(harvestDays)
+        super("Garlic", 15.0, 50.0, 6, 25.0, 17.0);//Name, buy price, sell price, dayMax, sunMax, rainMax
     }
 
 }

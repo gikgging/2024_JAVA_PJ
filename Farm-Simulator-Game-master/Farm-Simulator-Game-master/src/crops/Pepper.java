@@ -2,19 +2,14 @@ package crops;
 
 import main.Crop;
 
-/**
- * Parsnip class extending the Crop class.
- * @author Griffin Baxter and Rutger van Kruiningen
- */
+//Pepper class extending the Crop class.
 public class Pepper extends Crop
 {
 
-    /**
-     * Parsnip constructor.
-     */
+    //Pepper constructor.
     public Pepper()
     {
-        super("Pepper", 15.0, 40.0, 2);//Name, buy price, sell price, days to grow(harvestDays)
+        super("Pepper", 15.0, 40.0, 3, 20.0, 12.0);//Name, buy price, sell price, dayMax, sunMax, rainMax
     }
 
 }
