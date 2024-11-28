@@ -3,7 +3,6 @@ package main_cli;
 import java.util.ArrayList;
 import java.lang.Math;
 import java.util.Scanner;
-import main.Animal;
 import main.Crop;
 import main.Farm;
 import main.Farmer;
@@ -377,7 +376,7 @@ public class GameEnvironmentCLI
 			break;
 		}
 		System.out.println("");
-		if (farmer.getDaysPassed() != numDays)
+		if (farmer.getDays() != numDays)
 		{
 			mainGame();
 		}
@@ -410,7 +409,7 @@ public class GameEnvironmentCLI
 			break;
 		case 1: //View Crops for sale
 			System.out.println("Crops for sale:");
-			for(Crop crop: store.getCropsForSale()) 
+			for(Crop crop: store.getCropsInStore()) 
 			{
 				System.out.println("\n" + crop.getName());
 				System.out.println("Purchase price: $" + returnDollarsCents(crop.getPurchasePrice()));
@@ -431,7 +430,7 @@ public class GameEnvironmentCLI
 			break;
 		case 3: //View Items for sale
 			System.out.println("Items for sale:");
-			for(Item item: store.getItemsForSale()) 
+			for(Item item: store.getItemsInStore()) 
 			{
 				System.out.println("\n" + item.getName());
 				System.out.println("Purchase price: $" + returnDollarsCents(item.getPurchasePrice()));
@@ -450,7 +449,7 @@ public class GameEnvironmentCLI
 			break;
 		case 4: //View currently owned items
 			System.out.println("You own " + farm.getItems().size() + " items. They are:");
-			for(Item item: store.getItemsForSale()) 
+			for(Item item: store.getItemsInStore()) 
 			{
 				int numOwned = 0;
 				for(Item checkItem: farm.getItems()) 
@@ -512,16 +511,16 @@ public class GameEnvironmentCLI
 			
 			if (farm.calculateFreeSpace() > 0) 
 			{
-				int purchaseOption = printOptions(farm.returnCropsString("0. Don't buy anything\n", store.getCropsForSale()), store.getCropsForSale().size());
+				int purchaseOption = printOptions(farm.returnCropsString("0. Don't buy anything\n", store.getCropsInStore()), store.getCropsInStore().size());
 				
-				if (farm.getMoney() < store.getCropsForSale().get(purchaseOption - 1).getPurchasePrice()) 
+				if (farm.getMoney() < store.getCropsInStore().get(purchaseOption - 1).getPurchasePrice()) 
 				{
-					System.out.println("You don't have enough money to buy " + store.getCropsForSale().get(purchaseOption - 1).getName() + "!");
+					System.out.println("You don't have enough money to buy " + store.getCropsInStore().get(purchaseOption - 1).getName() + "!");
 				}
 				else if (purchaseOption != 0) // If the player did not choose None
 				{
-					farm.increaseCrops(store.getCropsForSale().get(purchaseOption - 1));
-					System.out.println(store.getCropsForSale().get(purchaseOption - 1).getName() + " bought!");
+					farm.increaseCrops(store.getCropsInStore().get(purchaseOption - 1));
+					System.out.println(store.getCropsInStore().get(purchaseOption - 1).getName() + " bought!");
 				}
 			}
 			else 
@@ -554,21 +553,21 @@ public class GameEnvironmentCLI
 		
 		else if (purchaseCategory == "item") 
 		{
-			for(Item item: store.getItemsForSale()) 
+			for(Item item: store.getItemsInStore()) 
 			{
 				purchaseIndex++;
 				purchaseString += purchaseIndex + ". " + item.getName() + "\n";
 			}
 			int purchaseOption = printOptions(purchaseString, purchaseIndex);
 			
-			if (farm.getMoney() < store.getItemsForSale().get(purchaseOption - 1).getPurchasePrice()) 
+			if (farm.getMoney() < store.getItemsInStore().get(purchaseOption - 1).getPurchasePrice()) 
 			{
-				System.out.println("You don't have enough money to buy " + store.getItemsForSale().get(purchaseOption - 1).getName() + "!");
+				System.out.println("You don't have enough money to buy " + store.getItemsInStore().get(purchaseOption - 1).getName() + "!");
 			}
 			else if (purchaseOption != 0) // If the player did not choose None
 			{
-				farm.increaseItems(store.getItemsForSale().get(purchaseOption - 1));
-				System.out.println(store.getItemsForSale().get(purchaseOption - 1).getName() + " bought!");
+				farm.increaseItems(store.getItemsInStore().get(purchaseOption - 1));
+				System.out.println(store.getItemsInStore().get(purchaseOption - 1).getName() + " bought!");
 			}
 		}
 	}
@@ -604,7 +603,7 @@ public class GameEnvironmentCLI
 		System.out.println(farmer.getFarmerName() + " has slept.\n");
 		farmer.increaseDaysPassed();
 		actionsPerformed = 0;
-		if (farmer.getDaysPassed() != numDays)
+		if (farmer.getDays() != numDays)
 		{
 			farm.growCrops();
 			farm.increaseMoney(farm.collectAnimalMoney());
@@ -753,7 +752,7 @@ public class GameEnvironmentCLI
 	{
 		String profitString;
 		double scoreProfit = farm.getProfit();
-		double scoreAge = (15 - farmer.getDaysPassed());
+		double scoreAge = (15 - farmer.getDays());
 		double scoreCropSize = farm.getCrops().size() + 1;
 		double scoreCropSpace = farm.getCropSpace();
 		
@@ -776,7 +775,7 @@ public class GameEnvironmentCLI
 		
 		System.out.println("The game has finished!\n"
 				+ "Stats for " + farmer.getFarmerName() + " on the farm " + farm.getFarmName() + ":\n"
-				+ farmer.getDaysPassed() + " days have passed.\n"
+				+ farmer.getDays() + " days have passed.\n"
 				+ farmer.getFarmerName() + profitString
 				+ "Total Score: " + Math.round(score) + "\n" //rounds score to 0dp
 				+ "Score is able to be increased by the profit, the healthiness and happiness of animals, the percentage of crop slots utilised, and by choosing a lower number of days!");
@@ -789,7 +788,7 @@ public class GameEnvironmentCLI
 	public ArrayList<Crop> returnDifferentCropsOwned()
 	{
 		ArrayList<Crop> differentCrops = new ArrayList<Crop>();
-		for(Crop crop: store.getCropsForSale())
+		for(Crop crop: store.getCropsInStore())
 		{
 			for(Crop cropCheck: farm.getCrops()) 
 			{
