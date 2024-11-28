@@ -12,7 +12,7 @@ public interface StoreProduct
 	 * A method to get the purchase price of a store product. Must be implemented in all of the store product classes (Crop, Animal and Item).
 	 * @return The purchase price of a store item.
 	 */
-	double getPurchasePrice();
+	double getBuyPrice();
 	
 	/**
 	 * A method to get the name of a store product. Must be implemented in all of the store product classes (Crop, Animal and Item).
