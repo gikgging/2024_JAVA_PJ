@@ -30,6 +30,9 @@ public class Store
 	 */
 	private ArrayList<Item> itemsInStore = new ArrayList<Item>();
 	
+	
+	private ArrayList<Product> productsInStore = new ArrayList<Product>();
+	
 	/**
 	 * Constructor function for Store Class, this constructor takes a variable <code>initAnimalHappiness</code> and gives all animals that base happiness.
 	 * This Constructor also fills the crops, animals and items for sale Array Lists with values.

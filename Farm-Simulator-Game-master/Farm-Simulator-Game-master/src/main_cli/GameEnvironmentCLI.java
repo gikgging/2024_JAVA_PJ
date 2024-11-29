@@ -12,7 +12,6 @@ import main.Store;
 /**
  * Game Environment class command line form. This is the main Class of the command line program.
  * In this screen the user can play the farm simulator game.
- * @author Griffin Baxter and Rutger van Kruiningen
  */
 public class GameEnvironmentCLI 
 {
@@ -291,15 +290,15 @@ public class GameEnvironmentCLI
 			System.out.println("\n" + farm.getFarmName() + " has " + farm.getCrops().size() + " crops");
 			for(Crop crop: farm.getCrops()) 
 			{
-				if (crop.getDaysLeftToGrow() > 0) 
+				if (crop.getLeftDay() > 0) 
 				{
-					System.out.println(crop.getName() + " Has been growing for " + crop.getDaysGrown() 
-					+ " days, it needs " + (crop.getDaysLeftToGrow())
+					System.out.println(crop.getName() + " Has been growing for " + crop.getDayGrown() 
+					+ " days, it needs " + (crop.getLeftDay())
 					+ " more days to be harvested");
 				}
 				else 
 				{
-					System.out.println(crop.getName() + " Has been growing for " + crop.getDaysGrown() 
+					System.out.println(crop.getName() + " Has been growing for " + crop.getDayGrown() 
 					+ " days, it is ready to harvest!");
 				}
 			}
@@ -412,9 +411,9 @@ public class GameEnvironmentCLI
 			for(Crop crop: store.getCropsInStore()) 
 			{
 				System.out.println("\n" + crop.getName());
-				System.out.println("Purchase price: $" + returnDollarsCents(crop.getPurchasePrice()));
+				System.out.println("Purchase price: $" + returnDollarsCents(crop.getBuyPrice()));
 				System.out.println("Sell price: $" + returnDollarsCents(crop.getSellPrice()));
-				System.out.println("Days to grow: " + crop.getDaysToGrow());
+				System.out.println("Days to grow: " + crop.getDayMax());
 			}
 			System.out.println("");
 			break;
@@ -777,7 +776,7 @@ public class GameEnvironmentCLI
 				+ "Stats for " + farmer.getFarmerName() + " on the farm " + farm.getFarmName() + ":\n"
 				+ farmer.getDays() + " days have passed.\n"
 				+ farmer.getFarmerName() + profitString
-				+ "Total Score: " + Math.round(score) + "\n" //rounds score to 0dp
+				+ "Total Score: " + Math.round(score) + "\n" //rounds score to 0dps
 				+ "Score is able to be increased by the profit, the healthiness and happiness of animals, the percentage of crop slots utilised, and by choosing a lower number of days!");
 	}
 	

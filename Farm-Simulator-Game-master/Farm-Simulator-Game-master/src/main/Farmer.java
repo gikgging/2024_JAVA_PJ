@@ -91,84 +91,78 @@ public class Farmer
 	}
 	
 	//Add an Item in Crop Inventory
-	public void addCropInven(Crop crop)
+	public void addCropInven(String cropName)
 	{
-		String name = crop.getName();
-		if(cropInventory.containsKey(name))
+		if(cropInventory.containsKey(cropName))
 		{
-			cropInventory.put(name, cropInventory.get(name)+1);
+			cropInventory.put(cropName, cropInventory.get(cropName)+1);
 		}
 		return;
 	}
 	
 	//Add an Item in Item Inventory
-	public void addItemInven(Item item)
-	{
-		String name = item.getName();
-		if(itemInventory.containsKey(name))
+	public void addItemInven(String itemName)
+	{-
+		if(itemInventory.containsKey(itemName))
 		{
-			itemInventory.put(name, itemInventory.get(name)+1);
+			itemInventory.put(itemName, itemInventory.get(itemName)+1);
 		}
 		return;
 	}
 	
 	//Remove an Item from Crop Inventory
-	public void subCropInven(Crop crop)
+	public void subCropInven(String cropName)
 	{
-		String name = crop.getName();
-		if(cropInventory.containsKey(name))
+		if(cropInventory.containsKey(cropName))
 		{
-			Integer value = getCropValue(crop);
+			Integer value = getCropValue(cropName);
 			if(value != null && value > 0)
 			{
-				cropInventory.put(name, value-1);
+				cropInventory.put(cropName, value-1);
 			}
 			else
 			{
-				cropInventory.put(name, 0);
+				cropInventory.put(cropName, 0);
 			}
 		}
 		return;
 	}
 	
 	//Remove an Item from Item Inventory
-	public void subItemInven(Item item)
+	public void subItemInven(String itemName)
 	{
-		String name = item.getName();
-		if(itemInventory.containsKey(name))
+		if(itemInventory.containsKey(itemName))
 		{
-			Integer value = getItemValue(item);
+			Integer value = getItemValue(itemName);
 			if(value != null && value > 0)
 			{
-				itemInventory.put(name, value-1);
+				itemInventory.put(itemName, value-1);
 			}
 			else
 			{
-				itemInventory.put(name, 0);
+				itemInventory.put(itemName, 0);
 			}
 		}
 		return;
 	}
 	
 	//Returns value of the crop (when it doesn't exist -> null)
-	public Integer getCropValue(Crop crop) 
+	public Integer getCropValue(String cropName) 
 	{
-		String name = crop.getName();
-		if(cropInventory.containsKey(name))
+		if(cropInventory.containsKey(cropName))
 		{
-			return cropInventory.get(name);
+			return cropInventory.get(cropName);
 		}
 		else
 			return null;
 	}
 	
 	//Returns value of the item (when it doesn't exist -> null)
-	public Integer getItemValue(Item item) 
+	public Integer getItemValue(String itemName) 
 	{
-		String name = item.getName();
-		if(itemInventory.containsKey(name))
+		if(itemInventory.containsKey(itemName))
 		{
-			return itemInventory.get(name);
+			return itemInventory.get(itemName);
 		}
 		else
 			return null;
