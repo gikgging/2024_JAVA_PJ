@@ -1,37 +1,27 @@
 package main;
+
 import java.util.ArrayList;
 
 /**
  * Farm class where the users farm gets managed.
  * Here the user can get set the farm type, tend to their farm and tend to their crops.
- * @author Griffin Baxter and Rutger van Kruiningen
  */
 public class Farm
 {
 	
-	/**
-	 * Farm name String.
-	 */
+	//Farm Name
 	private String farmName;
 	
-	/**
-	 * Crops owned ArrayList, gets filled with Crops.
-	 */
-	private ArrayList<Crop> crops = new ArrayList<Crop>();
+	//Crops ArrayList
+	private ArrayList<Crop> crops = new ArrayList<Crop>(); //이게 뭐야 쓰읍
 	
-	/**
-	 * Animals owned ArrayList, gets filled with Animals.
-	 */
-	private ArrayList<Animal> animals = new ArrayList<Animal>();
-	
-	/**
-	 * Items owned ArrayList, gets filled with Items.
-	 */
+	//Items ArrayList
 	private ArrayList<Item> items = new ArrayList<Item>();
 	
-	/**
-	 * Money owning.
-	 */
+	//Products ArrayList
+	private ArrayList<Product> prods = new ArrayList<Product>();
+	
+	//Money the farm has
 	private double money;
 	
 	/**
@@ -44,16 +34,20 @@ public class Farm
 	 */
 	private int cropSpace;
 	
+	//Farmer who is working on the farm
+	private Farmer farmer;
+	
 	
 	/**
 	 * Constructor function for Farm Class, this constructor initialises variables <code>farmName</code> and Sets the farm type.
 	 * @param name The name of the farmer.
 	 * @param type The type of the farmer in String format.
 	 */
-	public Farm(String name, String type) 
+	public Farm(String name, String type, Farmer initFarmer) 
 	{
         farmName = name;
         setFarmType(type);
+        farmer = initFarmer;
     }
 	
 	/**
@@ -144,7 +138,7 @@ public class Farm
 	 * The function then returns the total money made from harvesting the crops.
 	 * @return The total money made form harvesting the crops.
 	 */
-	public double harvestAvailableCrops()
+	public double harvestAvailableCrops() //Inventory로 저장되게끔 수정
 	{
 		double moneyMade = 0;
 		
@@ -193,65 +187,7 @@ public class Farm
 			}
 		} 
 	}
-	
-	/**
-	 * Increases health of all animals by healthToIncrease, returns true if there are animals to feed and returns false if there are no animals.
-	 * @param healthToIncrease The health increase for the animal.
-	 * @return true if there are animals, false otherwise.
-	 */
-	public boolean increaseHealthAllAnimals(double healthToIncrease)
-	{
-		int index = 0;
-		for(Animal animal: animals)
-		{
-			index++;
-			animal.increaseHealth(healthToIncrease);
-		}
-		if (index > 0) 
-		{
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
-	}
-	
-	/**
-	 * Increases happiness of all animals, returns true if there are animals to play with and returns false if there are no animals.
-	 * @return true if there are animals, false otherwise.
-	 */
-	public boolean increaseHappinessAllAnimals()
-	{
-		int index = 0;
-		for(Animal animal: animals)
-		{
-			index++;
-			animal.increaseHappiness();
-		}
-		if (index > 0) 
-		{
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
-	}
-	
-	/**
-	 * A function that collects all money from animals daily profit and returns it. This function gets called when the player moves on to the next day.
-	 * @return The daily profit for all animals owned summed together.
-	 */
-	public double collectAnimalMoney()
-	{
-		double moneyMade = 0.0;
-		for(Animal animal: animals) 
-		{
-			moneyMade += animal.getDailyProfit();
-		}
-		return moneyMade;
-	}
+
 	
 	/**
 	 * Increase crops owned from the crop passed through the method  by adding it to the <code>crops</code> ArrayList.
@@ -260,17 +196,8 @@ public class Farm
 	public void increaseCrops(Crop crop)
 	{
 		crops.add(new Crop(crop));
-		money -= crop.getPurchasePrice();
-	}
-	
-	/**
-	 * Increase animals owned from the animal passed through the method  by adding it to the <code>animals</code> ArrayList.
-	 * @param animal The animal being purchased.
-	 */
-	public void increaseAnimals(Animal animal)
-	{
-		animals.add(new Animal(animal));
-		money -= animal.getPurchasePrice();
+		farmer.addCropInven(crop.getName()); //SY added it
+		money -= crop.getBuyPrice();
 	}
 	
 	/**
@@ -280,16 +207,33 @@ public class Farm
 	public void increaseItems(Item item)
 	{
 		items.add(new Item(item));
-		money -= item.getPurchasePrice();
+		farmer.addItemInven(item.getName()); //SY added it
+		money -= item.getBuyPrice();
+	}
+	
+	public void decreaseCrops(Crop crop) // It decreased one by one & SY added it
+	{
+		crops.remove(crops.indexOf(crop));
+		farmer.subCropInven(crop.getName(), 1);
+		return;
 	}
 	
 	/**
 	 * Removes an item from the <code>items</code> ArrayList by finding the item and then removing it.
 	 * @param item The item to remove.
 	 */
-	public void decreaseItems(Item item)
+	public void decreaseItems(Item item) // It decreased one by one & It's the original form
 	{
 		items.remove(items.indexOf(item));
+		farmer.subItemInven(item.getName(), 1); //SY added it
+		return;
+	}
+	
+	public void decreaseProds(Product prod) // It decreased one by one & SY added it
+	{
+		prods.remove(prods.indexOf(prod));
+		farmer.subProductInven(prod.getName(), 1);
+		return;
 	}
 	
 	/**
@@ -367,21 +311,17 @@ public class Farm
 	}
 	
 	/**
-	 * Returns the animals the farm currently owns from the animals ArrayList.
-	 * @return An ArrayList of animals owned.
-	 */
-	public ArrayList<Animal> getAnimals() 
-	{
-		return animals;
-	}
-	
-	/**
 	 * Returns the items the farm currently owns from the items ArrayList.
 	 * @return An ArrayList of items owned.
 	 */
 	public ArrayList<Item> getItems() 
 	{
 		return items;
+	}
+	
+	public ArrayList<Product> getProds()
+	{
+		return prods;
 	}
 	
 	/**

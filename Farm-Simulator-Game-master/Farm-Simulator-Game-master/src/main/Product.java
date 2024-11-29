@@ -2,7 +2,6 @@ package main;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
 import main.Farmer;
 
 public class Product
@@ -14,19 +13,27 @@ public class Product
 	private Map<String, Integer> ingredients;
 	
 	//The price for the product to be sold
-	private int sellPrice;
+	private double sellPrice;
 	
 	//The decreased farmer's strength while making product
-	private double decreaseStrength;
+	private int decreaseStrength;
 	
 	
 	//Constructor
-	Product(String name, int i_sellPrice, double dec_strength)
+	public Product(String name, double i_sellPrice, int dec_strength)
 	{
 		productName = name;
 		ingredients = new HashMap<>();
 		sellPrice = i_sellPrice;
 		decreaseStrength = dec_strength;
+	}
+	
+	public Product(Product prod)
+	{
+		productName = prod.productName;
+		ingredients = prod.ingredients;
+		sellPrice = prod.sellPrice;
+		decreaseStrength = prod.decreaseStrength;
 	}
 	
 	//Functions for returning value
@@ -40,12 +47,12 @@ public class Product
 		return ingredients;
 	}
 	
-	public int getSellPrice()
+	public double getSellPrice()
 	{
 		return sellPrice;
 	}
 	
-	public double getDecStr()
+	public int getDecStr()
 	{
 		return decreaseStrength;
 	}
@@ -64,33 +71,31 @@ public class Product
 				{
 					return false;
 				}
-			} //For CropInventory
+			} //Find it from CropInventory
 			else if(itemInven.containsKey(kindIngrd))
 			{
 				if(itemInven.get(kindIngrd) < ingredients.get(kindIngrd)) //hold amount < requested amount
 				{
 					return false;
 				}
-			} //For ItemInventory
+			} //Find it from ItemInventory
 		}
+		
+		if(farmer.getFarmerStrength() < decreaseStrength)
+		{
+			return false;
+		} //If needed Strength is bigger than his actual strength
 		
 		return true;
 	}
 	
 	public void addIngrd(String name, int totalAmount)
 	{
-		if(ingredients.containsKey(name))
-		{
-			ingredients.put(name, ingredients.get(name) + 1);
-		}
-		else
-		{
-			ingredients.put(name, 1);
-		}
+		ingredients.put(name, totalAmount);
 		return;
 	}
 	
-	public void produce(Farmer farmer)
+	public boolean produce(Farmer farmer)
 	{
 		Map<String, Integer> cropInven = farmer.getCropInven();
 		Map<String, Integer> itemInven = farmer.getItemInven();
@@ -98,18 +103,32 @@ public class Product
 		//Before using this function, "canProd()" must be called
 		for(String kindIngrd : ingredients.keySet())
 		{
-			if(cropInven.containsKey(kindIngrd))
+			int neededIngrd = ingredients.get(kindIngrd);
+			
+			//What I wanna produce is in the cropInven and there are ingredients more than I needed
+			if(cropInven.containsKey(kindIngrd) && (farmer.getCropValue(kindIngrd) >= neededIngrd))
 			{
-				cropInven.subCropInven(kin)
+				farmer.subCropInven(kindIngrd, neededIngrd);
+				continue;
 			} //For CropInventory
-			else if(itemInven.containsKey(kindIngrd))
+			
+			//What I wanna produce is in the itemInven and there are ingredients more than I needed
+			else if(itemInven.containsKey(kindIngrd) && (farmer.getItemValue(kindIngrd) >= neededIngrd))
 			{
-				if(itemInven.get(kindIngrd) < ingredients.get(kindIngrd)) //hold amount < requested amount
-				{
-					return false;
-				}
+				farmer.subItemInven(kindIngrd, neededIngrd);
+				continue;
 			} //For ItemInventory
+			
+			return false; //It means "There's an error while producing the product"
 		}
+		
+		if(farmer.getFarmerStrength() < decreaseStrength)
+		{
+			farmer.subStrength(decreaseStrength);
+		}
+		else return false; //Use Strength to produce the product.
+		
+		return true; //It means "Producing is successfully complete!"
 	}
 	
 	

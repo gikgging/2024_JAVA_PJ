@@ -11,6 +11,11 @@ import items.Egg;
 import items.Namool;
 import items.RedBull;
 
+import products.Baguette;
+import products.Bibimbap;
+import products.Bread;
+import products.Kimchi;
+
 import java.util.ArrayList;
 
 /**
@@ -57,11 +62,16 @@ public class Store
 		// The ingredients for some product
 		itemsInStore.add(new Egg());
 		itemsInStore.add(new Namool());
+		
+		// Products : only for selling
+		productsInStore.add(new Baguette());
+		productsInStore.add(new Bibimbap());
+		productsInStore.add(new Bread());
+		productsInStore.add(new Kimchi());
 	}
 	
 	/**
 	 * Returns the cropsForSale ArrayList.
-	 * @return The cropsForSale.
 	 */
 	public ArrayList<Crop> getCropsInStore()
 	{
@@ -70,13 +80,16 @@ public class Store
 	
 	/**
 	 * Returns the itemsForSale ArrayList.
-	 * @return The itemsForSale.
 	 */
 	public ArrayList<Item> getItemsInStore()
 	{
 		return itemsInStore;
 	}
 	
+	public ArrayList<Product> getProductsInStore()
+	{
+		return productsInStore;
+	}
 	/**
 	 * return Crop at <code>index</code> to be purchased.
 	 * @param index Index of crop to buy.
@@ -96,5 +109,6 @@ public class Store
 	{
 		return itemsInStore.get(index);
 	}
+	
 	
 }

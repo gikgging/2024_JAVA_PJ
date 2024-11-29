@@ -28,6 +28,9 @@ public class Farmer
 	//The inventory for items
 	private Map<String, Integer> itemInventory = new HashMap<>();
 	
+	//The inventory for products
+	private Map<String, Integer> productInventory = new HashMap<>();
+	
 	/**
 	 * Constructor function for Farmer Class
 	 * Name: Name of the farmer.
@@ -52,6 +55,12 @@ public class Farmer
 		itemInventory.put("Egg", 0);
 		itemInventory.put("Namool", 0);
 		itemInventory.put("RedBull", 0);
+		
+		//Initialize productInventory
+		productInventory.put("Baguette", 0);
+		productInventory.put("Bibimbap", 0);
+		productInventory.put("Bread", 0);
+		productInventory.put("Kimchi", 0);
 	}
 	
 	//Function to increase the days passed of the farmer on the farm, increases the days passed by 1
@@ -102,7 +111,7 @@ public class Farmer
 	
 	//Add an Item in Item Inventory
 	public void addItemInven(String itemName)
-	{-
+	{
 		if(itemInventory.containsKey(itemName))
 		{
 			itemInventory.put(itemName, itemInventory.get(itemName)+1);
@@ -110,38 +119,67 @@ public class Farmer
 		return;
 	}
 	
-	//Remove an Item from Crop Inventory
-	public void subCropInven(String cropName)
+	//Add an Product in Product Inventory
+	public void addProductInven(String prodName)
+	{
+		if(productInventory.containsKey(prodName))
+		{
+			productInventory.put(prodName, productInventory.get(prodName)+1);
+		}
+		return;
+	}
+	
+	//Remove a Crop from Crop Inventory
+	public void subCropInven(String cropName, int dec)
 	{
 		if(cropInventory.containsKey(cropName))
 		{
 			Integer value = getCropValue(cropName);
-			if(value != null && value > 0)
+			if(value != null && value >= dec)
 			{
-				cropInventory.put(cropName, value-1);
+				cropInventory.put(cropName, value-dec);
 			}
 			else
 			{
-				cropInventory.put(cropName, 0);
+				return;
+			}
+		}
+	}
+	
+	//Remove an Item from Item Inventory
+	public void subItemInven(String itemName, int dec)
+	{
+		if(itemInventory.containsKey(itemName))
+		{
+			Integer value = getItemValue(itemName);
+			if(value != null && value >= dec)
+			{
+				itemInventory.put(itemName, value-dec);
 			}
 		}
 		return;
 	}
 	
-	//Remove an Item from Item Inventory
-	public void subItemInven(String itemName)
+	//Remove a Product from Product Inventory
+	public void subProductInven(String prodName, int dec)
 	{
-		if(itemInventory.containsKey(itemName))
+		if(productInventory.containsKey(prodName))
 		{
-			Integer value = getItemValue(itemName);
-			if(value != null && value > 0)
+			Integer value = getItemValue(prodName);
+			if(value != null && value >= dec)
 			{
-				itemInventory.put(itemName, value-1);
+				productInventory.put(prodName, value-dec);
 			}
-			else
-			{
-				itemInventory.put(itemName, 0);
-			}
+		}
+		return;
+	}
+	
+	//Decrease his strength
+	public void subStrength(int dec)
+	{
+		if(farmerStrength >= dec)
+		{
+			farmerStrength -= dec;
 		}
 		return;
 	}
