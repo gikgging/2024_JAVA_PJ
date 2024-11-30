@@ -78,6 +78,7 @@ public class GameCenter
 			setupWindow.setWarningText("");
 			farmer = new Farmer(farmerName, 1, farmerAge); // First day
 			farm = new Farm(farmName, farmType, farmer);
+			farmer.addFarm(farm);
 			
 			// Create store
 			if (farmType == "Normal") 

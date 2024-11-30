@@ -2,8 +2,7 @@ package main;
 
 import java.util.HashMap;
 import java.util.Map;
-import main.Crop;
-import main.Item;
+import java.util.ArrayList;
 
 /**
  * Farmer class where the users farmer is.
@@ -30,6 +29,9 @@ public class Farmer
 	
 	//The inventory for products
 	private Map<String, Integer> productInventory = new HashMap<>();
+	
+	//The farm where the farmer works
+	private Farm farm;
 	
 	/**
 	 * Constructor function for Farmer Class
@@ -61,6 +63,12 @@ public class Farmer
 		productInventory.put("Bibimbap", 0);
 		productInventory.put("Bread", 0);
 		productInventory.put("Kimchi", 0);
+	}
+	
+	public void addFarm(Farm addedFarm)
+	{
+		farm = addedFarm;
+		return;
 	}
 	
 	//Function to increase the days passed of the farmer on the farm, increases the days passed by 1
@@ -105,6 +113,8 @@ public class Farmer
 		if(cropInventory.containsKey(cropName))
 		{
 			cropInventory.put(cropName, cropInventory.get(cropName)+1);
+			ArrayList<Crop> crops = farm.getCrops();
+			crops.add(new Crop(cropName)); //머리가 안굴러가요..... cropName만 알아도 crop을 생성할 수 있으면 좋을텐데,, 완전히 다른방식으로 하셔두 조아요,,
 		}
 		return;
 	}
@@ -115,6 +125,8 @@ public class Farmer
 		if(itemInventory.containsKey(itemName))
 		{
 			itemInventory.put(itemName, itemInventory.get(itemName)+1);
+			ArrayList<Item> items = farm.getItems();
+			items.add(new Item(itemName)); //Same Problem...
 		}
 		return;
 	}
@@ -125,6 +137,8 @@ public class Farmer
 		if(productInventory.containsKey(prodName))
 		{
 			productInventory.put(prodName, productInventory.get(prodName)+1);
+			ArrayList<Product> prods = farm.getProds();
+			prods.add(new Product(prodName)); //Same Problem,,,
 		}
 		return;
 	}
