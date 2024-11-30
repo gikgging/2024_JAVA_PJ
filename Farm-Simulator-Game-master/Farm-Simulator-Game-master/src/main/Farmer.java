@@ -22,7 +22,7 @@ public class Farmer
 	private int farmerDays;
 	
 	//The inventory for crops
-	private Map<String, Integer> cropInventory = new HashMap<>();
+	private Map<String, Integer> cropInventory = new HashMap<>(); //타입을 <String, Integer>에서 <Crop, Integer>로 바꿔야하나..? 어려워요
 	
 	//The inventory for items
 	private Map<String, Integer> itemInventory = new HashMap<>();
