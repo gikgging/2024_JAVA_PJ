@@ -1,6 +1,6 @@
 package gui;
 
-import main.GameEnvironment;
+import main.GameCenter;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -34,7 +34,7 @@ public class StoreScreen
 	/**
 	 * The manager which is the GameEnviroment Class.
 	 */
-	private GameEnvironment manager;
+	private GameCenter manager;
 	
 	/**
 	 * List of crops in a Jlist.
@@ -56,10 +56,6 @@ public class StoreScreen
 	 */
 	private JLabel cropMessageLabel;
 	
-	/**
-	 * Label that displays if a animal has been purchased.
-	 */
-	private JLabel animalMessageLabel;
 	
 	/**
 	 * Label that displays if a item has been purchased.
@@ -76,7 +72,7 @@ public class StoreScreen
 	 * Then, the constructor calls initialise to initialise the screen and then makes the frame visible.
 	 * @param incomingManager The manager for the screen.
 	 */
-	public StoreScreen(GameEnvironment incomingManager) 
+	public StoreScreen(GameCenter incomingManager) 
 	{
 		manager = incomingManager;
 		initialize();

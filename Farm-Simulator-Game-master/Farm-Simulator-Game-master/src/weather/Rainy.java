@@ -1,4 +1,4 @@
-package weathers;
+package weather;
 
 import main.Weather;
 

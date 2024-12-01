@@ -1,20 +1,21 @@
 package main;
 
-import animals.Cow;
-import animals.Goat;
-import animals.Sheep;
-import crops.Corn;
-import crops.Parsnip;
-import crops.Potato;
-import crops.Pumpkin;
-import crops.Strawberry;
+import crops.Cabbage;
+import crops.Garlic;
+import crops.Pepper;
+import crops.Rice;
 import crops.Wheat;
-import items.Apples;
+
 import items.Compost;
-import items.HayBales;
-import items.InorganicFertiliser;
-import items.Lucerne;
-import items.OrganicFertiliser;
+import items.Egg;
+import items.Namool;
+import items.RedBull;
+
+import products.Baguette;
+import products.Bibimbap;
+import products.Bread;
+import products.Kimchi;
+
 import java.util.ArrayList;
 
 /**
@@ -27,76 +28,69 @@ public class Store
 	/**
 	 * The crops the store has for sale.
 	 */
-	private ArrayList<Crop> cropsForSale = new ArrayList<Crop>();
-	
-	/**
-	 * The animals the store has for sale.
-	 */
-	private ArrayList<Animal> animalsForSale = new ArrayList<Animal>();
-	
+	private ArrayList<Crop> cropsInStore = new ArrayList<Crop>();
+
 	/**
 	 * The items the store has for sale.
 	 */
-	private ArrayList<Item> itemsForSale = new ArrayList<Item>();
+	private ArrayList<Item> itemsInStore = new ArrayList<Item>();
+	
+	
+	private ArrayList<Product> productsInStore = new ArrayList<Product>();
 	
 	/**
 	 * Constructor function for Store Class, this constructor takes a variable <code>initAnimalHappiness</code> and gives all animals that base happiness.
 	 * This Constructor also fills the crops, animals and items for sale Array Lists with values.
+	 * @param d 
 	 * @param initAnimalHappiness The initial animal happiness.
 	 */
-	public Store(double initAnimalHappiness)
+	public Store(double d) //(hj)여기도 초기화랑 유지 construtor 따로 만들어야할듯
 	{
 		// Crops
-		cropsForSale.add(new Wheat());
-		cropsForSale.add(new Corn());
-		cropsForSale.add(new Potato());
-		cropsForSale.add(new Parsnip());
-		cropsForSale.add(new Strawberry());
-		cropsForSale.add(new Pumpkin());
-		
-		// Animals
-		animalsForSale.add(new Sheep(initAnimalHappiness));
-		animalsForSale.add(new Cow(initAnimalHappiness));
-		animalsForSale.add(new Goat(initAnimalHappiness));
+		cropsInStore.add(new Cabbage());
+		cropsInStore.add(new Garlic());
+		cropsInStore.add(new Pepper());
+		cropsInStore.add(new Rice());
+		cropsInStore.add(new Wheat());
 		
 		// Items
-		// The bonus for crops is an increase in the days grown.
-		itemsForSale.add(new OrganicFertiliser());
-		itemsForSale.add(new InorganicFertiliser());
-		itemsForSale.add(new Compost());
-		//The bonus for Animals is health given from food.
-		itemsForSale.add(new Apples());
-		itemsForSale.add(new HayBales());
-		itemsForSale.add(new Lucerne());
+		// The bonus for crops is an increase in the days grown
+		itemsInStore.add(new Compost());
+		
+		// The bonus for the farmer increases his strength
+		itemsInStore.add(new RedBull());
+		
+		// The ingredients for some product
+		itemsInStore.add(new Egg());
+		itemsInStore.add(new Namool());
+		
+		// Products : only for selling
+		productsInStore.add(new Baguette());
+		productsInStore.add(new Bibimbap());
+		productsInStore.add(new Bread());
+		productsInStore.add(new Kimchi());
 	}
 	
 	/**
 	 * Returns the cropsForSale ArrayList.
-	 * @return The cropsForSale.
 	 */
-	public ArrayList<Crop> getCropsForSale()
+	public ArrayList<Crop> getCropsInStore()
 	{
-		return cropsForSale;
-	}
-	
-	/**
-	 * Returns the animalsForSale ArrayList.
-	 * @return The animalsForSale.
-	 */
-	public ArrayList<Animal> getAnimalsForSale()
-	{
-		return animalsForSale;
+		return cropsInStore;
 	}
 	
 	/**
 	 * Returns the itemsForSale ArrayList.
-	 * @return The itemsForSale.
 	 */
-	public ArrayList<Item> getItemsForSale()
+	public ArrayList<Item> getItemsInStore()
 	{
-		return itemsForSale;
+		return itemsInStore;
 	}
 	
+	public ArrayList<Product> getProductsInStore()
+	{
+		return productsInStore;
+	}
 	/**
 	 * return Crop at <code>index</code> to be purchased.
 	 * @param index Index of crop to buy.
@@ -104,17 +98,7 @@ public class Store
 	 */
 	public Crop buyCrops(int index)
 	{
-		return cropsForSale.get(index);
-	}
-	
-	/**
-	 * return Animal at <code>index</code> to be purchased.
-	 * @param index Index of animal to buy.
-	 * @return The Animal at specified <code>index</code>.
-	 */
-	public Animal buyAnimals(int index)
-	{
-		return animalsForSale.get(index);
+		return cropsInStore.get(index);
 	}
 	
 	/**
@@ -124,7 +108,8 @@ public class Store
 	 */
 	public Item buyItems(int index)
 	{
-		return itemsForSale.get(index);
+		return itemsInStore.get(index);
 	}
+	
 	
 }

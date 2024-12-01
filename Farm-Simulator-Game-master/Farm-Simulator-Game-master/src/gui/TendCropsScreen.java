@@ -1,6 +1,6 @@
 package gui;
 
-import main.GameEnvironment;
+import main.GameCenter;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,14 +33,14 @@ public class TendCropsScreen
 	/**
 	 * The manager which is the GameEnviroment Class.
 	 */
-	private GameEnvironment manager;
+	private GameCenter manager;
 
 	/**
 	 * Constructor for the tend to crops screen. This constructor takes an incoming manager and makes it the manager of the screen.
 	 * Then, the constructor calls initialise to initialise the screen and then makes the frame visible.
 	 * @param incomingManager The manager for the screen.
 	 */
-	public TendCropsScreen(GameEnvironment incomingManager) 
+	public TendCropsScreen(GameCenter incomingManager) 
 	{
 		manager = incomingManager;
 		initialize();

@@ -36,6 +36,8 @@ public class Crop implements StoreProduct
 	//The amount of Rain to be grown
 	private double rainGrown = 0;
 	
+	
+	
 	/**
 	 * Constructor function for Crop Class with each element
 	 * kind: The name of the crop.
@@ -75,7 +77,7 @@ public class Crop implements StoreProduct
 	 * This is done by checking if the <code>daysGrown</code> is greater than or equal to <code>daysToGrow</code>.
 	 * @return true if the crop can be harvested, false otherwise.
 	 */
-	public boolean canHarvest() //이 항목을 날씨, growth score로 바꿔서 넣으면 될듯
+	public boolean canHarvest()
 	{
 		if ((dayGrown >= dayMax) && (sunGrown >= sunMax) && (rainGrown >= rainMax) )
 		{

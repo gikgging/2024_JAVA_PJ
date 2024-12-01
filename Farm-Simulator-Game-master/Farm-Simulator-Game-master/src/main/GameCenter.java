@@ -11,7 +11,6 @@ import java.lang.Math;
 /**
  * Game Environment class. This is the main Class of the program.
  * In this screen the user can play the farm simulator game.
- * @author Griffin Baxter and Rutger van Kruiningen
  */
 public class GameCenter
 {
@@ -78,7 +77,8 @@ public class GameCenter
 		{
 			setupWindow.setWarningText("");
 			farmer = new Farmer(farmerName, 1, farmerAge); // First day
-			farm = new Farm(farmName, farmType);
+			farm = new Farm(farmName, farmType, farmer);
+			farmer.addFarm(farm);
 			
 			// Create store
 			if (farmType == "Normal") 

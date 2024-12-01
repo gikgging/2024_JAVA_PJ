@@ -1,38 +1,33 @@
 package main;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-import weathers.Sunny;
-import weathers.Rainy;
-import weathers.Cloudy;
+import weather.Sunny;
+import weather.Rainy;
+import weather.Cloudy;
+import main.Weather;
 
 /**
  * Farm class where the users farm gets managed.
  * Here the user can get set the farm type, tend to their farm and tend to their crops.
- * @author Griffin Baxter and Rutger van Kruiningen
  */
 public class Farm
 {
 	
-	/**
-	 * Farm name String.
-	 */
+	//Farm Name
 	private String farmName;
 	
-	/**
-	 * Crops owned ArrayList, gets filled with Crops.
-	 */
-	private ArrayList<Crop> crops = new ArrayList<Crop>();
-	
-	
-	/**
-	 * Items owned ArrayList, gets filled with Items.
-	 */
+	//Crops ArrayList
+	private ArrayList<Crop> crops = new ArrayList<Crop>(); //이게 뭐야 쓰읍
+		
+	//Items ArrayList
 	private ArrayList<Item> items = new ArrayList<Item>();
 	
-	/**
-	 * Money owning.
-	 */
+	//Products ArrayList
+	private ArrayList<Product> prods = new ArrayList<Product>();
+	
+	//Money the farm has
 	private double money;
 	
 	/**
@@ -46,35 +41,59 @@ public class Farm
 	private int cropSpace;
 	
 	//Generate the weather
-	private todayWeather = new WeatherGenerator();
+	private Weather todayWeather;
+
+	//Farmer who is working on the farm
+	private Farmer farmer;
 	
 	
 	/**
 	 * Constructor function for Farm Class, this constructor initialises variables <code>farmName</code> and Sets the farm type.
 	 * @param name The name of the farmer.
-	 * @param type The type of the farmer in String format.
 	 */
-	public Farm(String name, String type) //SetFarmtype을 지웠기 때문에 여기에서 money를 initialize 해야 할 수도..일단 좀 더 작성하면서 구현하기
-	
+
+	public Farm(String farmName)
 	{
-        farmName = name;
-        setFarmType(type);
-    }
+        this.farmName = farmName;
+        this.money = 100.0; //추후 적당한 값 정하기
+        this.cropSpace = 10; //추후 적당한 값 정하기
+        this.crops = new ArrayList<>(); // 빈 작물 리스트
+        this.items = new ArrayList<>(); // 빈 아이템 리스트
+        this.prods = new ArrayList<>(); // 빈 제품 리스트
+        WeatherGenerator(); // 첫날 날씨 생성
+	}
+	
+	//Load Farm Constructor
+	public Farm(String farmName, double money, int cropSpace, ArrayList<Crop> crops,
+            ArrayList<Item> items, Farmer farmer) {
+		this.farmName = farmName;
+		this.money = money; // 저장된 자금
+		this.cropSpace = cropSpace; // 저장된 농지 크기
+		this.crops = crops; // 저장된 작물 리스트
+		this.items = items; // 저장된 아이템 리스트
+		this.prods = new ArrayList<>(); // 제품 리스트도 저장된 상태에서 받아야 함
+		this.farmer = farmer; // 저장된 농부 객체
+		WeatherGenerator(); // 새로운 날씨 생성 (저장된 날씨가 있다면 불러올 수도 있음)
+}
 	
 	//Generate daily weather of the Farm
-	public class WeatherGenerator{
+	public void WeatherGenerator() {
 		Random random = new Random();
 		int num = random.nextInt(10);
 		
 		if (num < 3) { //The probability of Sunny weather = 30%
-			return new Sunny();
+			todayWeather = new Sunny();
 		}
 		else if (num < 7) { //The probability of Cloudy weather = 40%
-			return new Cloudy();
+			todayWeather = new Cloudy();
 		}
 		else { //The probability of Rainy weather = 30%
-			return new Rainy();
+			todayWeather = new Rainy();
 		}
+	}
+	
+	public Weather getTodayWeather() {
+		return todayWeather;
 	}
 
 	
@@ -127,7 +146,7 @@ public class Farm
 	 * The function then returns the total money made from harvesting the crops.
 	 * @return The total money made form harvesting the crops.
 	 */
-	public double harvestAvailableCrops()
+	public double harvestAvailableCrops() //Inventory로 저장되게끔 수정
 	{
 		double moneyMade = 0;
 		
@@ -152,8 +171,9 @@ public class Farm
 	
 	/**
 	 * A function to grow all of the crops owned, it does this by looping through all of the crops and calling their grow method.
+	 * @param todayWeather 
 	 */
-	public void growCrops()
+	public void growCrops(Weather todayWeather)
 	{
 		for(Crop crop: crops) 
 		{
@@ -176,65 +196,7 @@ public class Farm
 			}
 		} 
 	}
-	
-	/**
-	 * Increases health of all animals by healthToIncrease, returns true if there are animals to feed and returns false if there are no animals.
-	 * @param healthToIncrease The health increase for the animal.
-	 * @return true if there are animals, false otherwise.
-	 */
-	public boolean increaseHealthAllAnimals(double healthToIncrease)
-	{
-		int index = 0;
-		for(Animal animal: animals)
-		{
-			index++;
-			animal.increaseHealth(healthToIncrease);
-		}
-		if (index > 0) 
-		{
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
-	}
-	
-	/**
-	 * Increases happiness of all animals, returns true if there are animals to play with and returns false if there are no animals.
-	 * @return true if there are animals, false otherwise.
-	 */
-	public boolean increaseHappinessAllAnimals()
-	{
-		int index = 0;
-		for(Animal animal: animals)
-		{
-			index++;
-			animal.increaseHappiness();
-		}
-		if (index > 0) 
-		{
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
-	}
-	
-	/**
-	 * A function that collects all money from animals daily profit and returns it. This function gets called when the player moves on to the next day.
-	 * @return The daily profit for all animals owned summed together.
-	 */
-	public double collectAnimalMoney()
-	{
-		double moneyMade = 0.0;
-		for(Animal animal: animals) 
-		{
-			moneyMade += animal.getDailyProfit();
-		}
-		return moneyMade;
-	}
+
 	
 	/**
 	 * Increase crops owned from the crop passed through the method  by adding it to the <code>crops</code> ArrayList.
@@ -243,17 +205,8 @@ public class Farm
 	public void increaseCrops(Crop crop)
 	{
 		crops.add(new Crop(crop));
-		money -= crop.getPurchasePrice();
-	}
-	
-	/**
-	 * Increase animals owned from the animal passed through the method  by adding it to the <code>animals</code> ArrayList.
-	 * @param animal The animal being purchased.
-	 */
-	public void increaseAnimals(Animal animal)
-	{
-		animals.add(new Animal(animal));
-		money -= animal.getPurchasePrice();
+		farmer.addCropInven(crop.getName()); //SY added it
+		money -= crop.getBuyPrice();
 	}
 	
 	/**
@@ -263,16 +216,33 @@ public class Farm
 	public void increaseItems(Item item)
 	{
 		items.add(new Item(item));
-		money -= item.getPurchasePrice();
+		farmer.addItemInven(item.getName()); //SY added it
+		money -= item.getBuyPrice();
+	}
+	
+	public void decreaseCrops(Crop crop) // It decreased one by one & SY added it
+	{
+		crops.remove(crops.indexOf(crop));
+		farmer.subCropInven(crop.getName(), 1);
+		return;
 	}
 	
 	/**
 	 * Removes an item from the <code>items</code> ArrayList by finding the item and then removing it.
 	 * @param item The item to remove.
 	 */
-	public void decreaseItems(Item item)
+	public void decreaseItems(Item item) // It decreased one by one & It's the original form
 	{
 		items.remove(items.indexOf(item));
+		farmer.subItemInven(item.getName(), 1); //SY added it
+		return;
+	}
+	
+	public void decreaseProds(Product prod) // It decreased one by one & SY added it
+	{
+		prods.remove(prods.indexOf(prod));
+		farmer.subProductInven(prod.getName(), 1);
+		return;
 	}
 	
 	/**
@@ -350,21 +320,17 @@ public class Farm
 	}
 	
 	/**
-	 * Returns the animals the farm currently owns from the animals ArrayList.
-	 * @return An ArrayList of animals owned.
-	 */
-	public ArrayList<Animal> getAnimals() 
-	{
-		return animals;
-	}
-	
-	/**
 	 * Returns the items the farm currently owns from the items ArrayList.
 	 * @return An ArrayList of items owned.
 	 */
 	public ArrayList<Item> getItems() 
 	{
 		return items;
+	}
+	
+	public ArrayList<Product> getProds()
+	{
+		return prods;
 	}
 	
 	/**

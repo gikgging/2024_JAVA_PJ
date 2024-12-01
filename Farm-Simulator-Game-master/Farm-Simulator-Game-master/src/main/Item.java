@@ -3,7 +3,6 @@ package main;
 /**
  * Item class where items are extended from.
  * Here the user can get the bonus of the Item.
- * @author Griffin Baxter and Rutger van Kruiningen
  */
 public class Item implements StoreProduct
 {
@@ -19,9 +18,9 @@ public class Item implements StoreProduct
 	private String type;
 	
 	/**
-	 * The purchase price of the item.
+	 * The buy price of the item.
 	 */
-	private double purchasePrice;
+	private double buyPrice;
 	
 	/**
 	 * The bonus of the item.
@@ -39,7 +38,7 @@ public class Item implements StoreProduct
 	{
 		itemName = name;
 		type = initType;
-		purchasePrice = price;
+		buyPrice = price;
 		bonus = initBonus;
 		
 	}
@@ -52,7 +51,7 @@ public class Item implements StoreProduct
 	{
 		itemName = item.getName();
 		type = item.getType();
-		purchasePrice = item.getPurchasePrice();
+		buyPrice = item.getBuyPrice();
 		bonus = item.getBonus();
 		
 	}
@@ -70,9 +69,9 @@ public class Item implements StoreProduct
 	 * Returns the purchase price of the item.
 	 * @return The purchase price of item.
 	 */
-	public double getPurchasePrice() 
+	public double getBuyPrice() 
 	{
-		return purchasePrice;
+		return buyPrice;
 	}
 	
 	/**

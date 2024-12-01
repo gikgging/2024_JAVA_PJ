@@ -11,7 +11,7 @@ public class Egg extends Item
 	/**
 	 * Egg(for Bread) constructor.
 	 */
-	public HayBales()
+	public Egg()
 	{
 		super("Egg", "Product", 10.0, 0.4); //Name, type (crop or Product or Health), price, bonus
 	}
